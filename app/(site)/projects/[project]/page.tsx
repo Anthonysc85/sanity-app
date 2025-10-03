@@ -6,14 +6,14 @@ import { PortableText } from "@portabletext/react";
 import fallBackImage from "@/public/project.png";
 
 type Props = {
-  params: {
+  params: Promise<{
     project: string;
-  };
+  }>;
 };
 
 // Dynamic metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const slug = params.project;
+  const { project: slug } = await params;
   const project: ProjectType = await getSingleProject(slug);
 
   return {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Project({ params }: Props) {
-  const slug = params.project;
+  const { project: slug } = await params;
   const project: ProjectType = await getSingleProject(slug);
 
   return (
